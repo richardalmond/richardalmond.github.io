@@ -1,0 +1,235 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Richard Almond | RASGS - Delving into the dephts of the human shadow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a2634 0%, #2c5282 100%);
+            color: #e2e8f0;
+            font-family: 'Merriweather', serif;
+            scroll-behavior: smooth;
+        }
+        .hero {
+            background: linear-gradient(to right, rgba(26, 38, 52, 0.9), rgba(44, 82, 130, 0.9)), url('https://source.unsplash.com/random/1600x900/?psychology');
+            background-size: cover;
+            background-position: center;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .section {
+            background: linear-gradient(45deg, rgba(26, 38, 52, 0.95), rgba(44, 82, 130, 0.95));
+            margin: 2rem auto;
+            padding: 3rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            max-width: 1200px;
+        }
+        .btn {
+            background: linear-gradient(to right, #2c5282, #1a2634);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+        .form-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #2c5282;
+            box-shadow: 0 0 10px rgba(44, 82, 130, 0.5);
+        }
+        .book-cover {
+            max-width: 300px;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        .rating-stars {
+            color: #f59e0b;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="bg-gray-900 p-4 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-white">RASGS book store</a>
+            <div class="space-x-4">
+                <a href="#home" class="text-white hover:text-blue-300">Home</a>
+                <a href="#book" class="text-white hover:text-blue-300">Book</a>
+                <a href="#about" class="text-white hover:text-blue-300">About</a>
+                <a href="#reviews" class="text-white hover:text-blue-300">Reviews</a>
+                <a href="#contact" class="text-white hover:text-blue-300">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="p-8">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4">RASGS</h1>
+            <p class="text-xl md:text-2xl mb-6">Discover the Shadow Gradient System by Richard Almond</p>
+            <p class="text-lg mb-6 italic">Currently Sold Out – New Stock Arriving Late 2026</p>
+            <a href="#book" class="btn inline-block px-6 py-3 rounded-lg text-lg font-semibold">Learn More</a>
+        </div>
+    </section>
+
+    <!-- Book Section -->
+    <section id="book" class="section">
+        <h2 class="text-3xl font-bold mb-6 text-center">RASGS - Delving into the human shadow</h2>
+        <div class="flex flex-col md:flex-row items-center gap-8">
+            <img src="../image.png" alt="Book Cover" class="book-cover">
+            <div>
+                <p class="text-lg mb-4">
+                    <strong>Status:</strong> Sold Out. New stock expected in late 2026. Join our waitlist below to be notified when available.
+                </p>
+                <p class="text-lg mb-4">
+                    <strong>Description:</strong> In RASGS - Delving into the dephts of the human shadow, Richard Almond unveils the Shadow Gradient System (RASGS), a groundbreaking framework that redefines psychological typology. Building on Jungian principles, RASGS maps the dynamic interplay of shadow functions as illuminating and darkening gradients, most potent under stress. With 12 subtypes per MBTI type, this work offers a fractal taxonomy of the psyche, enriched by clinical vignettes and the Gradiental Archetype Inventory (GAI, Cronbach’s alpha 0.92). A must-read for analysts, scholars, and enthusiasts seeking to navigate the numinous depths of human consciousness.
+                </p>
+                <p class="text-lg mb-4">
+                    <strong>Details:</strong><br>
+                    - Author: Richard Almond<br>
+                    - Publisher: Transliminal Press<br>
+                    - Publication Date: 2026 (Reprint)<br>
+                    - ISBN: 978-1-234567-89-0<br>
+                    - Pages: 450<br>
+                    - Format: Hardcover
+                </p>
+                <form class="space-y-4 max-w-md">
+                    <label for="waitlist-email" class="block text-lg">Join Waitlist for Restock Notification</label>
+                    <input type="email" id="waitlist-email" class="form-input w-full p-3 rounded-lg" placeholder="Your Email" required>
+                    <button type="submit" class="btn w-full px-6 py-3 rounded-lg text-lg font-semibold">Notify Me</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <h2 class="text-3xl font-bold mb-6 text-center">About Richard Almond</h2>
+        <p class="text-lg mb-4">
+            Richard Almond, a preeminent Jungian analyst, has revolutionized typology with the Shadow Gradient System (RASGS). Mentored by John Beebe at the C.G. Jung Institute of San Francisco, Almond’s decades of clinical practice inform his nuanced exploration of the psyche’s shadow dynamics. His global workshops and forthcoming works, including *Codex of the Gradiental Psyche* (2028), establish him as a visionary in transpersonal psychology.
+        </p>
+    </section>
+
+    <!-- Reviews Section -->
+    <section id="reviews" class="section">
+        <h2 class="text-3xl font-bold mb-6 text-center">Reader Reviews</h2>
+        <div class="space-y-6">
+            <div class="border-l-4 border-blue-400 pl-4">
+                <p class="text-lg italic">"A paradigm-shifting work that unveils the psyche’s hidden depths. Almond’s RASGS is a triumph of Jungian scholarship."</p>
+                <p class="text-sm mt-2">— Dr. Elena Voss, Jungian Analyst ★★★★★ <span class="rating-stars">★★★★★</span></p>
+            </div>
+            <div class="border-l-4 border-blue-400 pl-4">
+                <p class="text-lg italic">"Intellectually rigorous yet accessible, this book transforms how we understand MBTI and shadow functions."</p>
+                <p class="text-sm mt-2">— Marcus Lin, Psychology Enthusiast ★★★★☆ <span class="rating-stars">★★★★☆</span></p>
+            </div>
+            <div class="border-l-4 border-blue-400 pl-4">
+                <p class="text-lg italic">"The clinical vignettes bring RASGS to life. A must for anyone serious about typology."</p>
+                <p class="text-sm mt-2">— Sarah Kline, Therapist ★★★★★ <span class="rating-stars">★★★★★</span></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <h2 class="text-3xl font-bold mb-6 text-center">Contact Us</h2>
+        <form class="space-y-4 max-w-lg mx-auto">
+            <div>
+                <label for="name" class="block text-lg mb-2">Name</label>
+                <input type="text" id="name" class="form-input w-full p-3 rounded-lg" placeholder="Your Name" required>
+            </div>
+            <div>
+                <label for="email" class="block text-lg mb-2">Email</label>
+                <input type="email" id="email" class="form-input w-full p-3 rounded-lg" placeholder="Your Email" required>
+            </div>
+            <div>
+                <label for="message" class="block text-lg mb-2">Message</label>
+                <textarea id="message" class="form-input w-full p-3 rounded-lg" rows="5" placeholder="Your Message" required></textarea>
+            </div>
+            <button type="submit" class="btn w-full px-6 py-3 rounded-lg text-lg font-semibold">Send Message</button>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center py-6 bg-gray-900">
+        <p class="text-lg">© 2025 Transliminal Press. All rights reserved.</p>
+        <p class="text-sm mt-2">For inquiries, contact <a href="mailto:info@transliminalpress.com" class="text-blue-300 hover:underline">info@transliminalpress.com</a></p>
+    </footer>
+
+    <script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Waitlist form handling
+        document.querySelector('#book form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            alert('Thank you for joining the waitlist! You will be notified when new stock arrives in late 2026.');
+            this.reset();
+        });
+
+        // Contact form handling
+        document.querySelector('#contact form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            alert('Message sent! We will respond shortly.');
+            this.reset();
+        });
+    </script>
+</body>
+</html>
