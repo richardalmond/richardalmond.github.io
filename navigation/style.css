@@ -1,0 +1,74 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Base Styles */
+body, html {
+  
+  font-family: 'Helvetica Neue', sans-serif;
+  background-color: #000;
+  color: #fff;
+}
+
+/* types Section */
+#types {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 40px;
+  background-color: #000;
+  flex-direction: column;
+}
+
+#types-title{
+    margin: 20px;
+    margin-bottom: 40px;
+    font-size: 35px;
+}
+
+/* Flex container for image and text */
+.types-content {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+  align-items: center;
+  max-width: 1200px;
+  width: 100%;
+  font-size: 20px;
+}
+
+/* Image Styling */
+.types-image {
+  flex: 1;
+  max-width: 400px;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 0 24px rgba(255, 255, 255, 0.2);
+}
+
+/* Paragraph Styling */
+#types-paragraph {
+  flex: 1;
+  font-size: 1.4rem;
+  line-height: 1.4;
+  padding-left: 20px;
+  border-left: 2px solid #fff;
+}
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+  .types-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  #types-paragraph {
+    border-left: none;
+    border-top: 2px solid #fff;
+  }
+}
